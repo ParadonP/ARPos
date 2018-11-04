@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body_block%}
+    <h2>Inventory Stock</h2>
+    <table border='1px solid'>
+      <tr>
+        <th>Item</th>
+	<th>Qty</th>
+	<th>Qty Min</th>
+      </tr>
+      {% if item_list %}
+      {% for i in item_list %}
+      <tr>
+        <td>{{  i.item }}</td>
+        <td>{{  i.qty }}</td>
+        <td>{{  i.qty_min }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr><td>No Items to show.</td></tr>
+      {% endif %}
+    </table>
+{% endblock %}
