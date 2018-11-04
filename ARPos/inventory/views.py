@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Stock
-from .forms import AddInventory
+from .forms import AddInventoryItem, UpdateStock
 
 # Create your views here.
 def index(request):
@@ -13,20 +13,30 @@ def index(request):
 
 def add_inventory_item(request):
     '''View for adding items to the inventory'''
+    header2 = "Add Inventory Item"
     if request.method == 'POST':
-        form = AddInventory(request.POST)
+        form = AddInventoryItem(request.POST)
         if form.is_valid():
             # Save post items into local variable
             item = request.POST['item']
+            item_code = request.POST['item_code']
             qty = request.POST['qty']
             min_qty = request.POST['min_qty']
 
             # Commit to Database
-            instance = Stock(item=item, qty=qty, qty_min=min_qty)
+            instance = Stock(item=item, item_code=item_code, qty=qty, qty_min=min_qty)
             instance.save()
             return HttpResponseRedirect('/inventory')
-        else:
-            form = AddInventory()
-    else:
-        form = AddInventory()
-    return render(request, 'inventory/add_inventory_item.html', {'form': form})
+        form = AddInventoryItem()
+    form = AddInventoryItem()
+    return render(request, 'inventory/simple_form.html', {'header2': header2,
+                                                          'form': form})
+
+def update_stock_item(request):
+    ''' View for adding items to stock. '''
+    header2 = "Update Stock"
+    if request.method == 'POST':
+        Stock.objects.filter(id=request.POST['item']).update(qty=request.POST['qty'])
+    form = UpdateStock()
+    return render(request, 'inventory/simple_form.html', {'header2': header2,
+                                                          'form': form})
