@@ -17,3 +17,5 @@ class UpdateStock(forms.Form):
 class AddSupplier(forms.Form):
     ''' Defines the form for adding Suppliers '''
     sname = forms.CharField(label='Supplier Name', max_length=30)
+    semail = forms.EmailField(label='Email', max_length=254)
+    sphone = forms.CharField(label='Phone', max_length=10)

@@ -16,7 +16,8 @@ class Stock(models.Model):
 class Suppliers(models.Model):
     ''' Defines the available Suppliers'''
     sname = models.CharField(max_length=30)
-
+    semail = models.EmailField(max_length=254, default='undef')
+    sphone = models.CharField(max_length=10, default='0')
 
     def __str__(self):
         return self.sname
