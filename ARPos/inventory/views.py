@@ -2,7 +2,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .models import Stock, Suppliers
-from .forms import AddInventoryItem, UpdateStock, AddSupplier
+from .forms import AddInventoryItem, UpdateStock, AddSupplier, EditInventoryItem
 
 # Create your views here.
 def index(request):
@@ -10,11 +10,12 @@ def index(request):
     item_list = Stock.objects.order_by('-item')
     suppliers_list = Suppliers.objects.order_by('-sname')
     context = {'item_list': item_list,
-               'suppliers_list': suppliers_list}
+               'suppliers_list': suppliers_list,
+              }
     return render(request, 'inventory/index.html', context)
 
 def add_inventory_item(request):
-    '''View for adding items to the inventory'''
+    ''' View for adding items to the inventory '''
     header2 = "Add Inventory Item"
     if request.method == 'POST':
         form = AddInventoryItem(request.POST)
@@ -23,14 +24,49 @@ def add_inventory_item(request):
             item = request.POST['item']
             item_code = request.POST['item_code']
             qty = request.POST['qty']
-            min_qty = request.POST['min_qty']
+            qty_min = request.POST['qty_min']
+            unit = request.POST['unit']
 
             # Commit to Database
-            instance = Stock(item=item, item_code=item_code, qty=qty, qty_min=min_qty)
+            instance = Stock(item=item,
+                             item_code=item_code,
+                             qty=qty,
+                             qty_min=qty_min,
+                             unit=unit)
             instance.save()
             return HttpResponseRedirect('/inventory')
         form = AddInventoryItem()
     form = AddInventoryItem()
+    return render(request, 'inventory/simple_form.html', {'header2': header2,
+                                                          'form': form})
+
+def edit_inventory_item(request, item_id):
+    ''' View to edit existing Inventory Items '''
+    header2 = 'Edit Inventory Item'
+    #if request.method == 'GET':
+
+    # Here we need to get the object from the request.
+    # obj will be a list of dictionaries.
+    obj = Stock.objects.filter(id=item_id).values()
+
+    # Now we need convert it just to a dictionary.
+    for key in obj:
+        item = key
+
+
+    # Here we are modifiying the initial value of the form fields.
+    form = EditInventoryItem(initial={'item': item['item'],
+                                      'item_code': item['item_code'],
+                                      'cost': item['cost'],
+                                      'qty_min': item['qty_min'],
+                                      'unit': item['unit']})
+    if request.method == 'POST':
+        Stock.objects.filter(id=item_id).update(item=request.POST['item'],
+                                                item_code=request.POST['item_code'],
+                                                cost=request.POST['cost'],
+                                                #qty_min=request.POST['qty_min'],
+                                                unit=request.POST['unit'])
+
     return render(request, 'inventory/simple_form.html', {'header2': header2,
                                                           'form': form})
 
@@ -47,7 +83,7 @@ def add_supplier(request):
     ''' View for adding Supplier '''
     header2 = "Add Supplier"
     if request.method == 'POST':
-        form = AddSupplier(request.post)
+        form = AddSupplier(request.POST)
         if form.is_valid():
             sname = request.POST['sname']
             semail = request.POST['semail']

@@ -10,18 +10,22 @@
     <h3>Stock</h3>
     <table border='1px solid'>
       <tr>
-        <th>Item Code</th>
+        <th>Code</th>
         <th>Item</th>
 	      <th>Qty</th>
 	      <th>Qty Min</th>
+        <th>Cost</th>
+        <th>Unit</th>
       </tr>
       {% if item_list %}
         {% for i in item_list %}
         <tr>
           <td>{{ i.item_code }}</td>
-          <td>{{ i.item }}</td>
+          <td><a href="{% url 'edit_inventory' i.id %}">{{ i.item }}</a></td>
           <td>{{ i.qty }}</td>
           <td>{{ i.qty_min }}</td>
+          <td>${{ i.cost }}</td>
+          <td>{{ i.unit }}
         </tr>
         {% endfor %}
       {% else %}

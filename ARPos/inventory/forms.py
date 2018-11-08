@@ -2,12 +2,31 @@
 from django import forms
 from .models import Stock
 
+UNIT_TYPES = (
+    ('---', '---'),
+    ('box', 'Box'),
+    ('boltle', 'Bottle'),
+    ('bag', 'Bag'),
+    ('container', 'Container')
+)
+
 class AddInventoryItem(forms.Form):
     '''Defines the form for adding inventory Items'''
     item = forms.CharField(label='Item', max_length=30)
     item_code = forms.CharField(label='Item Code', max_length=10)
+    cost = forms.DecimalField(label='Cost')
     qty = forms.IntegerField(label='Qty')
-    min_qty = forms.IntegerField(label='Minimum')
+    qty_min = forms.IntegerField(label='Minimum')
+    unit = forms.ChoiceField(choices=UNIT_TYPES, required=True)
+
+class EditInventoryItem(forms.Form):
+    ''' Defines the form to use when editing an inventory item '''
+
+    item = forms.CharField(label='Item', max_length=30)
+    item_code = forms.CharField(label='Item Code', max_length=10)
+    cost = forms.DecimalField(label='Cost')
+    qty_min = forms.IntegerField(label='Minimum')
+    unit = forms.ChoiceField(choices=UNIT_TYPES, required=True)
 
 class UpdateStock(forms.Form):
     ''' Adds stock to an inventory item. '''

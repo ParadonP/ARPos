@@ -9,6 +9,7 @@ class Stock(models.Model):
     cost = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
     qty = models.PositiveSmallIntegerField()
     qty_min = models.PositiveSmallIntegerField()
+    unit = models.CharField(max_length=10, default='undef')
 
     def __str__(self):
         return self.item
