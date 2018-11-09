@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block body_block%}
+    <h2>Inventory App</h2>
+    <h3>Inventory Links</h3>
+    <a href='/inventory/update_stock'>Update Stock</a><br>
+    <a href='/inventory/add_inventory'>Add new Item</a><br>
+    <h3>Suppliers</h3>
+    <a href='/inventory/add_supplier'>Add Supplier</a><br>
+    <br>
+    <h3>Stock</h3>
+    <table border='1px solid'>
+      <tr>
+        <th>Code</th>
+        <th>Item</th>
+	      <th>Qty</th>
+	      <th>Qty Min</th>
+        <th>Cost</th>
+        <th>Unit</th>
+      </tr>
+      {% if item_list %}
+        {% for i in item_list %}
+        <tr>
+          <td>{{ i.item_code }}</td>
+          <td><a href="{% url 'edit_inventory' i.id %}">{{ i.item }}</a></td>
+          <td>{{ i.qty }}</td>
+          <td>{{ i.qty_min }}</td>
+          <td>${{ i.cost }}</td>
+          <td>{{ i.unit }}
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr><td>No Items to show.</td></tr>
+      {% endif %}
+    </table>
+
+    <h3>Suppliers</h3>
+    <table border='1px solid'>
+      <tr>
+        <th>Supplier Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+      </tr>
+      {% if suppliers_list %}
+        {% for s in suppliers_list %}
+        <tr>
+          <td>{{ s.sname }}</td>
+          <td>{{ s.semail }}</td>
+          <td>{{ s.sphone }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+      <tr><td>No Suppliers to show.</td></tr>
+      {% endif %}
+    </table>
+{% endblock %}
