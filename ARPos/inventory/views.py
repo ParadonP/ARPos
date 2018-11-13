@@ -1,10 +1,12 @@
 '''Modules to import'''
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import Stock, Suppliers
 from .forms import AddInventoryItem, UpdateStock, AddSupplier, EditInventoryItem
 
 # Create your views here.
+@login_required
 def index(request):
     ''' Default View when getting to inventory app'''
     item_list = Stock.objects.order_by('-item')
@@ -14,6 +16,7 @@ def index(request):
               }
     return render(request, 'inventory/index.html', context)
 
+@login_required
 def add_inventory_item(request):
     ''' View for adding items to the inventory '''
     header2 = "Add Inventory Item"
@@ -39,7 +42,7 @@ def add_inventory_item(request):
     form = AddInventoryItem()
     return render(request, 'inventory/simple_form.html', {'header2': header2,
                                                           'form': form})
-
+@login_required
 def edit_inventory_item(request, item_id):
     ''' View to edit existing Inventory Items '''
     header2 = 'Edit Inventory Item'
@@ -69,7 +72,7 @@ def edit_inventory_item(request, item_id):
 
     return render(request, 'inventory/simple_form.html', {'header2': header2,
                                                           'form': form})
-
+@login_required
 def update_stock_item(request):
     ''' View for adding items to stock. '''
     header2 = "Update Stock"
@@ -78,7 +81,7 @@ def update_stock_item(request):
     form = UpdateStock()
     return render(request, 'inventory/simple_form.html', {'header2': header2,
                                                           'form': form})
-
+@login_required
 def add_supplier(request):
     ''' View for adding Supplier '''
     header2 = "Add Supplier"
