@@ -1,0 +1,7 @@
+/* This file is to fix styling errors found when using bootstrap css. */
+
+/* Setting margin-top as some of the text disappears into the nav bar
+ without this style added. */
+ .container {
+  margin-top: 60px;
+}

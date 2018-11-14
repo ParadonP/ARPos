@@ -3,9 +3,7 @@
     <h2>{{ header2 }}</h2>
     <form action="" method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <table>
-        {{ form }}
-      </table>
-      <input type="submit" value="Add">
+      {{ form }}
+      <button type="submit" class="btn btn-primary">Add</button>
     </form>
 {% endblock %}
