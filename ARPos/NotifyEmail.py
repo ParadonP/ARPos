@@ -1,15 +1,15 @@
 import smtplib
 
-server = 'smtp.gmail.com'
+server = 'smtp.gmail.com', 587
 user = ''
 password = ''
 
-recipients = ['user@mail.com', 'other@mail.com']
-sender = 'you@mail.com'
-message = 'Hello World'
+recipients = ['paradonp@outlook.com', 'tempa_d4@hotmail.com']
+sender = 'ppanjaroen@gmail.com'
+message = '''Hello World Don
+what are you doing'''
 
 session = smtplib.SMTP(server)
-# if your SMTP server doesn't need authentications,
-# you don't need the following line:
+
 session.login(user, password)
 session.sendmail(sender, recipients, message)
